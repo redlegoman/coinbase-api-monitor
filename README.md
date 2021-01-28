@@ -1,4 +1,4 @@
-## Config file
+## Config file (coins.ini)
 ```
 [btc]
 coin = BTC
