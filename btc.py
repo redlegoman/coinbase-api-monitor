@@ -5,6 +5,17 @@ import time
 import subprocess as sp
 from termcolor import colored
 
+import configparser
+config = configparser.ConfigParser()
+config.read('coins.ini')
+configbtc = config['btc']
+coin = configbtc['coin']
+currency = configbtc['currency']
+balance = configbtc['balance']
+print(coin)
+print(currency)
+print(balance)
+
 user_agent_list = [
     #Chrome
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36',
@@ -40,7 +51,7 @@ crypto_list = [
      '[31] UMA','[32] LRC','[33] YFI','[34] UNI','[35] BAL','[36] REN','[37] WBTC','[38] NU']]
 
 
-col_width = max(len(word) for row in crypto_list for word in row) + 2  # padding
+#col_width = max(len(word) for row in crypto_list for word in row) + 2  # padding
 #for row in crypto_list:
 #    print("".join(word.ljust(col_width) for word in row))
 
@@ -50,10 +61,10 @@ col_width = max(len(word) for row in crypto_list for word in row) + 2  # padding
 #delay = int(input("Enter the delay in seconds: "))
 #currency = input("Currency (EUR/USD/GBP): ")
 
-crypto_choice = 0
-crypto_amount = 0.00215695
+crypto_choice = int(0)
+crypto_amount = float(balance)
 delay = 5
-currency = "GBP"
+#currency = "GBP"
 
 previous_price = 0.0
 previous_change = 0.0
@@ -71,8 +82,8 @@ session1 = requests.Session()
 r1 = session1.get("https://www.coinbase.com/api/v2/assets/prices?base="+currency+"&filter=listed&resolution=latest", headers=headers)
 json_data = json.loads(r1.text)
 
-crypto_name = json_data['data'][crypto_choice]['base']
-currency = json_data['data'][crypto_choice]['currency']
+crypto_name = coin
+
 price = json_data['data'][crypto_choice]['prices']['latest']
 change = json_data['data'][crypto_choice]['prices']['latest_price']['percent_change']['hour']
 current_balance = round(((float(price) * crypto_amount)/1),5) #calculate current balance
@@ -84,52 +95,3 @@ print(current_balance)
 #-------------------------------------------------
 exit()
 
-while True:
-    t = time.localtime()
-    current_time = time.strftime("%H:%M:%S", t)
-    timer = colored("["+current_time+"]",'white')
-    user_agent = random.choice(user_agent_list)
-    headers={'User-Agent' : user_agent, 
-             'Accept' : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9', 
-             'Accept-Encoding' : 'gzip, deflate, br', 
-             'Accept-Language' : 'en-GB,en-US;q=0.9,en;q=0.8'}
-    session1 = requests.Session()
-    r1 = session1.get("https://www.coinbase.com/api/v2/assets/prices?base="+currency+"&filter=listed&resolution=latest", headers=headers)
-    json_data = json.loads(r1.text)
-
-
-    crypto_name = json_data['data'][crypto_choice]['base']
-    currency = json_data['data'][crypto_choice]['currency']
-    price = json_data['data'][crypto_choice]['prices']['latest']
-    change = json_data['data'][crypto_choice]['prices']['latest_price']['percent_change']['hour']
-    current_balance = round(((float(price) * crypto_amount)/1),5) #calculate current balance
-        
-    #check market status
-    if float(change) >= 0.0:
-        new_change = colored("Market is up by "+str(round(change,10))+"%",'green')
-    else:
-        new_change = colored("Market down by "+str(round(change,10))+"%",'red')
-
-    #check price status
-    if previous_price == float(price):
-        # print("[*] Same price", price)
-        pass
-    elif previous_price < float(price):
-        up = colored("[+] "+crypto_name+" price is: "+str(price)+" "+currency,'green')
-        print(timer, up, new_change, colored("since the last hour.",'green'),colored("Balance: "+str(current_balance)+" "+currency,'yellow'))
-        previous_price = float(price)
-        previous_change = float(change)
-
-    elif previous_price > float(price):
-        down = colored("[-] "+crypto_name+" price is: "+str(price)+" "+currency,'red')
-        print(timer, down, new_change, colored("since the last hour.",'red'),colored("Balance: "+str(current_balance)+" "+currency,'yellow'))
-        previous_price = float(price)
-        previous_change = float(change)
-    else:
-        pass
-
-    time.sleep(delay)
-
-
-
-    
