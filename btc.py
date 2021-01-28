@@ -12,9 +12,6 @@ configbtc = config['btc']
 coin = configbtc['coin']
 currency = configbtc['currency']
 balance = configbtc['balance']
-print(coin)
-print(currency)
-print(balance)
 
 user_agent_list = [
     #Chrome
@@ -50,25 +47,12 @@ crypto_list = [
      '[25] ATOM','[26] OXT','[27] COMP','[28] BAND','[29] NMR'],['[30] CGLD',
      '[31] UMA','[32] LRC','[33] YFI','[34] UNI','[35] BAL','[36] REN','[37] WBTC','[38] NU']]
 
-
-#col_width = max(len(word) for row in crypto_list for word in row) + 2  # padding
-#for row in crypto_list:
-#    print("".join(word.ljust(col_width) for word in row))
-
-#user preferences
-#crypto_choice = int(input("\nCrypto to monitor: "))
-#crypto_amount = float(input("Enter your current amount of cryptos: "))
-#delay = int(input("Enter the delay in seconds: "))
-#currency = input("Currency (EUR/USD/GBP): ")
-
 crypto_choice = int(0)
 crypto_amount = float(balance)
 delay = 5
-#currency = "GBP"
 
 previous_price = 0.0
 previous_change = 0.0
-#tmp = sp.call('clear', shell=True) #clear terminal
 
 t = time.localtime()
 current_time = time.strftime("%H:%M:%S", t)
