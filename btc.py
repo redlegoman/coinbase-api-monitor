@@ -3,7 +3,7 @@ import random
 import json
 import time
 import subprocess as sp
-from termcolor import colored
+#from termcolor import colored
 
 import configparser
 config = configparser.ConfigParser()
@@ -56,7 +56,7 @@ previous_change = 0.0
 
 t = time.localtime()
 current_time = time.strftime("%H:%M:%S", t)
-timer = colored("["+current_time+"]",'white')
+#timer = colored("["+current_time+"]",'white')
 user_agent = random.choice(user_agent_list)
 headers={'User-Agent' : user_agent, 
              'Accept' : 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9', 
